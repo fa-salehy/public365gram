@@ -105,6 +105,12 @@
                             <li class="nav-sub-item">
                                 <a class="nav-sub-link" href="{{route('admins.index')}}">مدیر ها</a>
                             </li>
+                            <li class="nav-sub-item">
+                                <a class="nav-sub-link" href="{{route('admintags.index')}}">تگ ها</a>
+                            </li>
+                            <li class="nav-sub-item">
+                                <a class="nav-sub-link" href="{{route('report.adminIndex')}}">بررسی های انجام شده</a>
+                            </li>
                             {{-- <li class="nav-sub-item">
                                 <a class="nav-sub-link" href="{{route('roles.index')}}">نقش ها</a>
                             </li> --}}
@@ -143,10 +149,22 @@
                             <span class="shape1"></span>
                             <span class="shape2"></span>
                             <i class="fas fa-users sidemenu-icon"></i>
-                            <span class="sidemenu-label">مدیریت تگ ها</span><i class="angle fe fe-chevron-left"></i></a>
+                            <span class="sidemenu-label">مدیریت بررسی ها</span><i class="angle fe fe-chevron-left"></i></a>
                         <ul class="nav-sub">
                             <li class="nav-sub-item">
-                                <a class="nav-sub-link" href="{{route('tags.index')}}">تگ ها</a>
+                                <a class="nav-sub-link" href="{{route('tags.index')}}">بررسی جدید</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link with-sub" href="#">
+                            <span class="shape1"></span>
+                            <span class="shape2"></span>
+                            <i class="fas fa-users sidemenu-icon"></i>
+                            <span class="sidemenu-label">گزارشات</span><i class="angle fe fe-chevron-left"></i></a>
+                        <ul class="nav-sub">
+                            <li class="nav-sub-item">
+                                <a class="nav-sub-link" href="{{route('report.index')}}">گزارش پست ها</a>
                             </li>
                         </ul>
                     </li>
@@ -176,10 +194,11 @@
                         <span class="sidemenu-label">امور مالی</span><i class="angle fe fe-chevron-left"></i></a>
                     <ul class="nav-sub">
                         <li class="nav-sub-item">
-                            <a class="nav-sub-link" href="#">صورتحساب</a>
+                            <a class="nav-sub-link" href="{{route('payment.create')}}">صورتحساب</a>
                         </li>
-                    </ul>
+                    </ul> 
                 </li>
+                
                 @endif
                 <li class="nav-item mt-3">
                     <a class="nav-link" href="#">
@@ -279,7 +298,7 @@
                 <div class="dropdown main-header-notification">
                     <a class="nav-link icon" href="#">
                         <i class="fe fe-bell header-icons"></i>
-                        <span class="badge badge-danger nav-link-badge">4</span>
+                        <span class="badge badge-danger nav-link-badge">0</span>
                     </a>
                     <div class="dropdown-menu">
                         <div class="header-navheading">
@@ -313,7 +332,7 @@
                 <div class="main-header-notification">
                     <a class="nav-link icon" href="#">
                         <i class="fe fe-message-square header-icons"></i>
-                        <span class="badge badge-success nav-link-badge">6</span>
+                        <span class="badge badge-success nav-link-badge">0</span>
                     </a>
                 </div>
                 <div class="dropdown main-profile-menu">
@@ -397,7 +416,7 @@
                     <div class="dropdown main-header-notification">
                         <a class="nav-link icon" href="#">
                             <i class="fe fe-bell header-icons"></i>
-                            <span class="badge badge-danger nav-link-badge">4</span>
+                            <span class="badge badge-danger nav-link-badge">0</span>
                         </a>
                         <div class="dropdown-menu">
                             <div class="header-navheading">
@@ -431,7 +450,7 @@
                     <div class="main-header-notification mt-2">
                         <a class="nav-link icon" href="#">
                             <i class="fe fe-message-square header-icons"></i>
-                            <span class="badge badge-success nav-link-badge">6</span>
+                            <span class="badge badge-success nav-link-badge">0</span>
                         </a>
                     </div>
                     <div class="dropdown main-profile-menu">

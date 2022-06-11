@@ -124,4 +124,7 @@ class AdminController extends Controller
         alert()->success('مدیر با موفقیت حذف شد');
         return back();
     }
+
+
+
 }

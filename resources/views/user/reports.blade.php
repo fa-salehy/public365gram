@@ -24,117 +24,24 @@
         <div class="col-lg-12">
             <div class="card custom-card">
                 <div class="card-body">
-                    <button class="btn btn-primary mb-3" data-toggle="modal" data-target="#modal-create">ساخت بررسی جدید
-                    </button>
-                    <!-- Create Modal -->
-                    <div class="modal fade" id="modal-create">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h4 class="modal-title">ساخت بررسی جدید</h4>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <div class="modal-body">
-                                    <!-- form start -->
-                                    <form method="POST" action="{{route('tags.store')}}" enctype="multipart/form-data">
-                                        @csrf
-                                        <div class="card-body">
-                                            <div class="form-group">
-                                                <label for="exampleInputEmail1">اسم تگ</label>
-                                                {{-- <input name="name" type="text" class="form-control"
-                                                       id="exampleInputEmail1" placeholder="نام تگ"
-                                                       oninvalid="this.setCustomValidity('نام تگ را وارد کنید')"
-                                                       oninput="this.setCustomValidity('')"
-                                                       value="{{old('name')}}"
-                                                       required> --}}
-                                                       <select class="form-control" name="name" required>
-                                                           @foreach ($admintags as $admintag)
-                                                           <option value="{{ $admintag->name }}">{{$admintag->name }}</option>
-                                                           @endforeach
-                                                           
-                                                      </select>
-                                            </div>
-                                            {{-- <div class="form-group">
-                                                <label for="exampleInputEmail1">پیج اصلی</label>
-                                                       <select class="form-control" name="main_page" required>
-                                                        @foreach($userPage as $item)
-                                                            <option value="{{ $item->main_page }}">{{ $item->main_page }}</option>
-                                                        @endforeach
-                                                      </select>
-                                            </div> --}}
-                                            
-                                            {{-- <div class="form-group">
-                                                <label for="exampleInputEmail1">پیج لایک کننده</label>
-                                                <input name="second_page" type="text" class="form-control"
-                                                       id="exampleInputEmail1" placeholder="پیج لایک کننده"
-                                                       oninvalid="this.setCustomValidity('نام پیج لایک کننده را وارد کنید')"
-                                                       oninput="this.setCustomValidity('')" value="{{old('second_page')}}"
-                                                       required>
-                                            </div> --}}
-                                            {{-- <div class="form-group">
-                                                <label for="exampleInputEmail1">شماره موبایل</label>
-                                                <input name="phone" type="number" class="form-control"
-                                                       id="exampleInputEmail1" placeholder="شماره موبایل"
-                                                       oninvalid="this.setCustomValidity('شماره موبایل را وارد کنید')"
-                                                       oninput="this.setCustomValidity('')" value="{{old('phone')}}"
-                                                       required>
-                                            </div> --}}
-                                            <div class="form-group">
-                                                <label for="exampleInputEmail1">زمان باز شدن تگ</label>
-                                                <input name="start_date" type="time" class="form-control"
-                                                        placeholder="زمان باز شدن تگ"
-                                                       oninvalid="this.setCustomValidity('زمان باز شدن تگ را وارد کنید')"
-                                                       value="{{old('start_date')}}"
-                                                        min="2022-05-09"
-                                                       required>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="exampleInputEmail1">زمان بسته شدن تگ</label>
-                                                <input name="final_date" type="time" class="form-control"
-                                                        placeholder="زمان بسته شدن تگ"
-                                                       oninvalid="this.setCustomValidity('زمان بسته شدن تگ را وارد کنید')"
-                                                       value="{{old('final_date')}}"
-                                                        min="2022-05-09"
-                                                       required>
-                                            </div>
-                                            {{-- <input type="hidden" name="admin_id" value="{{auth()->user()->id}}">
-                                            <input type="hidden" name="super_admin_id" value="{{auth()->user()->admin_id}}"> --}}
-                                        </div>
-                                        <!-- /.card-body -->
-
-                                        <div class="card-footer">
-                                            <button type="submit" class="btn btn-primary">ایجاد</button>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                            <!-- /.modal-content -->
-                        </div>
-                        <!-- /.modal-dialog -->
-                    </div>
-
                     <table id="table" class="table table-bordered table-striped text-center">
                         <thead>
                         <tr>
-                               {{--<th>تصویر کاربر</th>--}}
-                               <th>ردیف</th>
-                               <th>تگ</th>
-                               <th>زمان باز شدن تگ</th>
-                               <th>زمان بسته شدن تگ</th>
-                               <th>بررسی دستی</th>
-                               {{-- <th>وضعیت</th> --}}
-                               <th>عملیات</th>
+                           {{--<th>تصویر کاربر</th>--}}
+                           <th>ردیف</th>
+                           <th>پیج اصلی</th>
+                           <th>تگ</th>
+                           <th>وضعیت</th>
+                           <th>زمان پست</th>
+                           {{-- <th>وضعیت</th> --}}
+                           <th>عملیات</th>
                         </tr>
                         </thead>
                         <tbody>
-                        @foreach ($tags as $tagss)
+                        @foreach ($data as $tag)
                             {{-- @if (auth()->user()->admin_id == $user->super_admin_id) --}}
                                 
-                    @foreach ($tagss as $tag)
-                        
-               
+                    
                             <tr>
                                 {{-- <td>
                                      <img class="rounded-circle" src="{{URL::to('/').$user->profile()}}" alt=""
@@ -142,18 +49,30 @@
                                  </td>--}}
                                  <td>{{$tag->id}}</td>
                                 <td>
+                                    {{$tag->main_page}}
+                                </td>
+                                <td>
                                     {{$tag->name}}
                                 </td>
                                 <td>
-                                    {{$tag->start_date}}
+                                    @if ($tag->status == '0')
+                                    بررسی نشده
+                                    @elseif($tag->status == '1')
+                                    پست دارد   
+                                    @elseif($tag->status == '2') 
+                                    پست ندارد
+                                    @endif
                                 </td>
-                                <td>
-                                    {{$tag->final_date}}
+                                 <td>
+                                    {{$tag->start_date}} {{\Morilog\Jalali\CalendarUtils::strftime('Y/m/d', $tag->created_at)}}
                                 </td>
-                                <td>
-                                    <a href="{{route('report.check',$tag->id)}}">
-                                    <button class="btn btn-secondary">بررسی</button></a>
-                                </td>
+                                {{-- <td>{{App\Models\User::getUserNameByID($user->admin_id)}}</td> --}}
+                                {{-- <td>
+                                    @if ($tag->status == '0')
+                                        بررسی نشده
+                                    @endif
+                                   
+                                </td> --}}
                                 <td class="text-center">
                                     <button class="btn btn-secondary dropdown-toggle" type="button"
                                             id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
@@ -164,16 +83,17 @@
 
                                         {{-- <button type="button" class="btn btn-success dropdown-item" data-toggle="modal"
                                                 data-target="#modal-edit{{$tag->id}}"><i class="fas fa-user-edit"></i>ویرایش
-                                        </button> --}}
+                                        </button>
                                         <button type="button" class="dropdown-item" data-toggle="modal"
                                                 data-target="#modal-delete{{$tag->id}}"><i style="color:red"
-                                                                                            class="fas fa-user-minus"></i> حذف
+                                                                                            class="fas fa-user-minus"></i>حذف
+                                        </button> --}}
+                                        <button type="button" class="dropdown-item" ><i class="fas fa-user-edit"></i> نمایش پست 
                                         </button>
                                     </div>
                                 </td>
 
                             </tr>
-                            
                             <!-- Delete Modal -->
                             <div class="modal fade" id="modal-delete{{$tag->id}}">
                                 <div class="modal-dialog">
@@ -298,7 +218,7 @@
 
                             {{-- @endif --}}
                         @endforeach
-                        @endforeach
+
                     </table>
 
                 </div>

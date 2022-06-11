@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Tag;
+namespace App\Http\Requests\AdminTag;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateTagRequest extends FormRequest
+class StoreAdminTagRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,9 +25,7 @@ class UpdateTagRequest extends FormRequest
     {
         return [
             'name' => ['required','regex:/^[a-zA-Z0-9.-_]+$/'],
-            // 'main_page' => ['required'],
-            'start_date'=> ['required'],
-            'final_date'=> ['required']
+            'super_admin_id'=> ['nullable'],
         ];
     }
 }

@@ -24,37 +24,34 @@
         <div class="col-lg-12">
             <div class="card custom-card">
                 <div class="card-body">
-                    <button class="btn btn-primary mb-3" data-toggle="modal" data-target="#modal-create">ساخت بررسی جدید
+                    <button class="btn btn-primary mb-3" data-toggle="modal" data-target="#modal-create">ساخت تگ جدید
                     </button>
                     <!-- Create Modal -->
                     <div class="modal fade" id="modal-create">
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h4 class="modal-title">ساخت بررسی جدید</h4>
+                                    <h4 class="modal-title">ساخت تگ جدید</h4>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
                                 </div>
                                 <div class="modal-body">
                                     <!-- form start -->
-                                    <form method="POST" action="{{route('tags.store')}}" enctype="multipart/form-data">
+                                    <form method="POST" action="{{route('admintags.store')}}" enctype="multipart/form-data">
                                         @csrf
                                         <div class="card-body">
                                             <div class="form-group">
                                                 <label for="exampleInputEmail1">اسم تگ</label>
-                                                {{-- <input name="name" type="text" class="form-control"
+                                                <input name="name" type="text" class="form-control"
                                                        id="exampleInputEmail1" placeholder="نام تگ"
                                                        oninvalid="this.setCustomValidity('نام تگ را وارد کنید')"
                                                        oninput="this.setCustomValidity('')"
                                                        value="{{old('name')}}"
-                                                       required> --}}
-                                                       <select class="form-control" name="name" required>
-                                                           @foreach ($admintags as $admintag)
-                                                           <option value="{{ $admintag->name }}">{{$admintag->name }}</option>
-                                                           @endforeach
-                                                           
-                                                      </select>
+                                                       required>
+                                                       {{-- <select class="form-control" name="name" required>
+                                                            <option value="{{ auth()->user()->page }}">{{ auth()->user()->page }}</option>
+                                                      </select> --}}
                                             </div>
                                             {{-- <div class="form-group">
                                                 <label for="exampleInputEmail1">پیج اصلی</label>
@@ -81,7 +78,7 @@
                                                        oninput="this.setCustomValidity('')" value="{{old('phone')}}"
                                                        required>
                                             </div> --}}
-                                            <div class="form-group">
+                                            {{-- <div class="form-group">
                                                 <label for="exampleInputEmail1">زمان باز شدن تگ</label>
                                                 <input name="start_date" type="time" class="form-control"
                                                         placeholder="زمان باز شدن تگ"
@@ -98,9 +95,9 @@
                                                        value="{{old('final_date')}}"
                                                         min="2022-05-09"
                                                        required>
-                                            </div>
-                                            {{-- <input type="hidden" name="admin_id" value="{{auth()->user()->id}}">
-                                            <input type="hidden" name="super_admin_id" value="{{auth()->user()->admin_id}}"> --}}
+                                            </div> --}}
+                                            {{-- <input type="hidden" name="admin_id" value="{{auth()->user()->id}}"> --}}
+                                            <input type="hidden" name="super_admin_id" value="{{auth()->user()->id}}">
                                         </div>
                                         <!-- /.card-body -->
 
@@ -118,23 +115,18 @@
                     <table id="table" class="table table-bordered table-striped text-center">
                         <thead>
                         <tr>
-                               {{--<th>تصویر کاربر</th>--}}
-                               <th>ردیف</th>
-                               <th>تگ</th>
-                               <th>زمان باز شدن تگ</th>
-                               <th>زمان بسته شدن تگ</th>
-                               <th>بررسی دستی</th>
-                               {{-- <th>وضعیت</th> --}}
-                               <th>عملیات</th>
+                            {{--<th>تصویر کاربر</th>--}}
+                            <th>ردیف</th>
+                            <th>تگ</th>
+                            {{-- <th>وضعیت</th> --}}
+                            <th>عملیات</th>
                         </tr>
                         </thead>
                         <tbody>
-                        @foreach ($tags as $tagss)
+                        @foreach ($tags as $tag)
                             {{-- @if (auth()->user()->admin_id == $user->super_admin_id) --}}
                                 
-                    @foreach ($tagss as $tag)
-                        
-               
+                    
                             <tr>
                                 {{-- <td>
                                      <img class="rounded-circle" src="{{URL::to('/').$user->profile()}}" alt=""
@@ -144,16 +136,13 @@
                                 <td>
                                     {{$tag->name}}
                                 </td>
-                                <td>
-                                    {{$tag->start_date}}
-                                </td>
-                                <td>
-                                    {{$tag->final_date}}
-                                </td>
-                                <td>
-                                    <a href="{{route('report.check',$tag->id)}}">
-                                    <button class="btn btn-secondary">بررسی</button></a>
-                                </td>
+                                {{-- <td>{{App\Models\User::getUserNameByID($user->admin_id)}}</td> --}}
+                                {{-- <td>
+                                    @if ($tag->status == '0')
+                                        بررسی نشده
+                                    @endif
+                                   
+                                </td> --}}
                                 <td class="text-center">
                                     <button class="btn btn-secondary dropdown-toggle" type="button"
                                             id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
@@ -173,7 +162,6 @@
                                 </td>
 
                             </tr>
-                            
                             <!-- Delete Modal -->
                             <div class="modal fade" id="modal-delete{{$tag->id}}">
                                 <div class="modal-dialog">
@@ -190,13 +178,12 @@
                                         <div class="modal-footer justify-content-between">
                                             <button type="button" class="btn btn-secondary" data-dismiss="modal">بستن
                                             </button>
-                                            <form action="{{route('tags.destroy',$tag->id)}}" method="POST">
+                                            <form action="{{route('admintags.destroy',$tag->id)}}" method="POST">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" class="btn btn-danger">حذف</button>
 
                                             </form>
-
                                         </div>
                                     </div>
                                     <!-- /.modal-content -->
@@ -298,7 +285,7 @@
 
                             {{-- @endif --}}
                         @endforeach
-                        @endforeach
+
                     </table>
 
                 </div>

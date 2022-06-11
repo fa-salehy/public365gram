@@ -5,7 +5,8 @@ namespace App\Console;
 use App\Console\Commands\Install;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
-
+use App\Http\Controllers\ReportController;
+use App\Models\Tag;
 class Kernel extends ConsoleKernel
 {
     /**
@@ -25,6 +26,19 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         // $schedule->command('inspire')->hourly();
+
+      
+            $schedule->call(function(){
+                $tags = Tag::where('checked','=',0)->get();
+                // print_r($tags);
+                foreach ($tags as $tag) {
+                ReportController::check_tag($tag);
+                $tag->update(['checked'=>1]);
+                print('check shod');
+                }
+                // print('hello');
+            })->dailyAt('18:22');
+       
     }
 
     /**

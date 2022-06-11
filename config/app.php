@@ -67,7 +67,7 @@ return [
     |
     */
 
-    'timezone' => 'UTC',
+    'timezone' => 'Asia/Tehran',
 
     /*
     |--------------------------------------------------------------------------
@@ -176,6 +176,8 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         Kavenegar\Laravel\ServiceProvider::class,
+        \SocialiteProviders\Manager\ServiceProvider::class,
+        \App\Providers\InstagramServiceProvider::class,
     ],
 
     /*
@@ -229,6 +231,7 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'Alert' => UxWeb\SweetAlert\SweetAlert::class,
         'Kavenegar' => Kavenegar\Laravel\Facade::class,
+        'Instagram' => App\Facades\Instagram::class
     ],
 
 ];

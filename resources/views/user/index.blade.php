@@ -71,7 +71,7 @@
                                                         placeholder="مدت اعتبار"
                                                        oninvalid="this.setCustomValidity('مدت اعتبار را وارد کنید')"
                                                        value="{{old('expired_at')}}"
-                                                        min="2022-05-09"
+                                                  
                                                        required>
                                             </div>
                                             <input type="hidden" name="admin_id" value="{{auth()->user()->id}}">

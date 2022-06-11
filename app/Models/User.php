@@ -107,4 +107,8 @@ class User extends Authenticatable
         return $this->profile ?? '/uploads/profiles/default/user.png';
     }
 
+    public function instagram(){
+        return $this->hasOne(Instagram::class, 'user_id', 'id');
+    }
+
 }

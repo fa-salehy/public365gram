@@ -24,8 +24,10 @@ class StoreTagRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => ['required'],
-            'main_page' => ['required'],
+            'name' => ['required','regex:/^[a-zA-Z0-9.-_]+$/'],
+            // 'main_page' => ['required'],
+            'start_date'=> ['required'],
+            'final_date'=> ['required']
         ];
     }
 }

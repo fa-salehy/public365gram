@@ -8,13 +8,17 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\Tag\StoreTagRequest;
 use App\Http\Requests\Tag\UpdateTagRequest;
 use Illuminate\Support\Facades\DB;
+use App\Models\AdminTag;
+use InstagramScraper\Instagram;
+use Phpfastcache\Helper\Psr16Adapter;
+
+// require __DIR__ . '/../vendor/autoload.php';
+
 class TagController extends Controller
 {
     public function index()
     {
-        $tags = Tag::all();
-        $userPageArray = [];
-        $admin_id = Auth::user()->admin_id;
+      
         // $userPage = UserPage::where('super_admin_id','=',$admin_id)->get();
         // foreach($tags as $tag){
         //     $userPages = $tag->user_pages()->get();
@@ -28,19 +32,58 @@ class TagController extends Controller
         //     }
         // }
         // dd($userPageArray);
-        $data = DB::table('tag_user_page')
-        ->join('tags','tag_user_page.tag_id','=','tags.id')
-        ->join('user_pages','tag_user_page.user_page_id','=','user_pages.id')
-        ->where('super_admin_id','=',$admin_id)
-        ->get(['tags.id','tags.name','user_pages.main_page','user_pages.second_page','tag_user_page.status']);
         // $admin_id = Auth::user()->id;
         // $admins = User::Admins()->latest()->get();
         $admin_id = Auth::user()->admin_id;
+        $tags = [];
+        $admintags = AdminTag::where('super_admin_id','=',$admin_id)->get();
+    
+        foreach ($admintags as $admintag) {
+            $tag = Tag::where('name','=',$admintag->name)->get();
+            array_push($tags, $tag);
+        }
+        // dd($tags);
         $userPage = UserPage::where('super_admin_id','=',$admin_id)->get();
+
         // dd($userPage);
-        return view('user.tags', compact('tags','userPage','data'));
+
+        // $username = 'fatemeh_dev_salehi';
+        // $password = 'Dev@1254';
+
+        // $instagram  = Instagram::withCredentials(
+        //     new \GuzzleHttp\Client(),
+        //     $username,
+        //     $password,
+        //     new Psr16Adapter('Files')
+        // );
+
+        // $instagram->login();
+
+        // $instagram->saveSession();
+
+        // $username = 'siamak_mahpeima';
+        // // $accountId = $instagram->getAccountInfo($username)->getId();
+
+        // // $tags = $instagram->getUserTags($accountId, 20);
+        // $tags = $instagram->getMedias($username, 12);
+        // $reflection = new \ReflectionClass($tags[8]);
+        // $property = $reflection->getProperty('taggedUsers');
+        // $property->setAccessible(true);
+        // $tagArray = $property->getValue($tags[8]);
+        // // $tag = $tagArray[0];
+        // // var_dump($tag['username']);
+        // if (count($tagArray)!= 0) {
+        //     foreach ($tagArray as $tag) {
+        //         if ($tag['username'] == 'hami__tag') {
+        //             // dd($tag['username']);
+        //         }
+        //     } 
+        // }
+
+
+        return view('user.tags', compact('tags','userPage','admintags'));
     }
-        /**
+        /** 
      * Store a newly created resource in storage.
      *
      * @param StoreTagRequest $request
@@ -51,24 +94,29 @@ class TagController extends Controller
 
         $request->validated();
         $tag = Tag::create([
-            'name' => $request->name 
+            'name' => $request->name,
+            'start_date'=> $request->start_date,
+            'final_date'=> $request->final_date
         ]); 
 
         $tag = Tag::where('name', '=', $request->name)->get()->last();
         // dd($tag);
         $tag_id = $tag->id;
 
-        $page = UserPage::where('main_page', '=', $request->main_page)->get()->first();
-        $page_id = $page->id;
-
-        $insertDetails = [
-            'tag_id' => $tag_id,
-            'user_page_id' => $page_id,
-            'status' => '0'
-        ];
-        
-        DB::table('tag_user_page')->insert($insertDetails);
-
+        // $page = UserPage::where('main_page', '=', $request->main_page)->get()->first();
+        $admin_id = Auth::user()->admin_id;
+        $pages = UserPage::where('super_admin_id','=',$admin_id)->get();
+        foreach ($pages as $page) {
+            $page_id = $page->id;
+            $second_page = $page->second_page;
+    
+            $insertDetails = [
+                'tag_id' => $tag_id,
+                'user_page_id' => $page_id,
+                'status' => '0'
+            ];
+            DB::table('tag_user_page')->insert($insertDetails);        
+        }
         //alert message
         alert()->success('تگ با موفقیت ایجاد شد');
         return back();
@@ -78,22 +126,35 @@ class TagController extends Controller
     {
         $request->validated();
         $tag = Tag::findOrFail($id)->update([
-            'name' => $request->name 
+            'name' => $request->name ,
+            'start_date'=> $request->start_date,
+            'final_date'=> $request->final_date
         ]); 
+        
         $tag = Tag::where('name', '=', $request->name)->get()->last();
         $tag_id = $tag->id;
 
-        $page = UserPage::where('main_page', '=', $request->main_page)->get()->first();
-        $page_id = $page->id;
+        // $page = UserPage::where('main_page', '=', $request->main_page)->get()->first();
+        // $page_id = $page->id;
         
-        $insertDetails = [
-            'tag_id' => $tag_id,
-            'user_page_id' => $page_id,
-            'status' => '0'
-        ];
+        // $insertDetails = [
+        //     'tag_id' => $tag_id,
+        //     'user_page_id' => $page_id,
+        //     'status' => '0'
+        // ];
         
-        DB::table('tag_user_page')->where('tag_id', '=', $tag_id)->update($insertDetails);
-
+        $pages = UserPage::all();
+        foreach ($pages as $page) {
+            $page_id = $page->id;
+            $second_page = $page->second_page;
+    
+            $insertDetails = [
+                'tag_id' => $tag_id,
+                'user_page_id' => $page_id,
+                'status' => '0'
+            ];
+            DB::table('tag_user_page')->where('tag_id', '=', $tag_id)->update($insertDetails); 
+        }
         alert()->success('تغییرات با موفقیت اعمال شد');
         return back();
     }
@@ -106,7 +167,6 @@ class TagController extends Controller
          alert()->success('تگ با موفقیت حذف شد');
         return back();
     }
-
 
 
 }

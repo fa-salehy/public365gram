@@ -7,7 +7,11 @@ use Illuminate\Http\Request;
 use App\Models\UserPage;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
-
+use Illuminate\Support\Facades\Http;
+use GuzzleHttp\Client;
+use App\Models\Tag;
+use App\Models\AdminTag;
+use Illuminate\Support\Facades\DB;
 class UserPageController extends Controller
 {
     // public function __construct()
@@ -36,7 +40,6 @@ class UserPageController extends Controller
         return view('user.index', compact('users','admin_id','admins'));
     }
 
-
         /**
      * Store a newly created resource in storage.
      *
@@ -47,7 +50,27 @@ class UserPageController extends Controller
     {
         // dd($request->validated());
         $user = UserPage::create($request->validated());
-        alert()->success('کاربر با موفقیت ایجاد شد');
+        // $tags = Tag::all();
+        $admin_id = Auth::user()->admin_id;
+        $tags = [];
+        $admintags = AdminTag::where('super_admin_id','=',$admin_id)->get();
+        foreach ($admintags as $admintag) {
+            $tag = Tag::where('name','=',$admintag->name)->get();
+            array_push($tags, $tag);
+        }
+        foreach ($tags as $tagss) {
+            foreach ($tagss as $tag) {
+                $insertDetails = [
+                    'tag_id' => $tag->id,
+                    'user_page_id' => $user->id,
+                    'status' => '0'
+                ];
+                DB::table('tag_user_page')->insert($insertDetails);  
+            }
+
+        }
+      
+        alert()->success('کاربر با موفقیت ایجاد شد'); 
         return redirect()->route('userpages.index');
     }
 
@@ -78,4 +101,7 @@ class UserPageController extends Controller
         alert()->success('کاربر با موفقیت حذف شد');
         return back();
     }
+
+
+
 }
